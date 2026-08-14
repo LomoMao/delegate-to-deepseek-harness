@@ -6,7 +6,9 @@
 
 `delegate-to-deepseek-harness` 是一个很轻的 Agent Skill：把边界清楚的编码任务交给 DeepSeek Harness 执行，再由 Codex 回来做 review 和最终验收。
 
-它不打算做成一个大而全的调度框架。Skill 只负责把“什么时候该委派、任务怎么交代、回来后怎么验收”这几件事做好；真正的 Worker 可以走 DeepSeek Harness MCP，也可以直接用官方 headless CLI。
+它刻意不做一个框架。没有任务队列，没有看板，没有新的配置格式——就三件事，老老实实回答：**这件事该不该委派、Worker 具体要做什么、结果怎么验证才算数。**
+
+Worker 本身可以走 DeepSeek Harness MCP，也可以直接用官方 headless CLI。哪条路明天坏了，这套流程都不会坏。
 
 ## 为什么做这个
 
@@ -50,7 +52,7 @@ cd delegate-to-deepseek-harness
 
 **方式二：手动复制** —— 把 `SKILL.md`、`agents/`、`references/`、`scripts/` 复制到 `$CODEX_HOME/skills/delegate-to-deepseek-harness/`。
 
-**方式三：Codex 内置 Skill 安装器**（仓库公开后）：
+**方式三：Codex 内置 Skill 安装器**：
 
 ```text
 $skill-installer install https://github.com/LomoMao/delegate-to-deepseek-harness
@@ -89,7 +91,7 @@ Worker 说“完成了”，不等于任务真的完成了。
 
 ## 当前状态
 
-这是一个早期版本，而且故意保持小。现在已经能用，但 DeepSeek Harness 生态变化很快，MCP 工具名和安装方式后面都有可能调整。本文档里的 MCP 工具名以 `@chushixixin/dsh-harness-mcp-server` v0.1.x 为准，详见 [setup](references/setup.md)。
+这是一个刻意保持小的项目，而且会一直这么小。核心流程——契约、委派、验收——是稳定的；它周围的 DeepSeek Harness 生态变化很快，所以文档里的 MCP 工具名以 `@chushixixin/dsh-harness-mcp-server` v0.1.x 为准（见 [setup](references/setup.md)），升级后可能需要小幅核对。
 
 欢迎提 Issue，也欢迎小而清楚的 PR。
 

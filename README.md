@@ -6,7 +6,9 @@
 
 `delegate-to-deepseek-harness` is a small Agent Skill for handing well-scoped coding work from Codex to DeepSeek Harness, then bringing the result back for review and verification.
 
-It is intentionally not a full orchestration framework. The skill defines the handoff contract and quality gate; the actual worker can run through a DeepSeek Harness MCP bridge or the official headless CLI.
+It is deliberately not a framework. No task queues, no dashboards, no extra config format — just three questions, answered honestly: *should this be delegated, what exactly should the worker do, and how do you check the result before you believe it.*
+
+The worker itself can run through a DeepSeek Harness MCP bridge or the official headless CLI. If one path breaks tomorrow, the workflow doesn't.
 
 ## Why
 
@@ -50,7 +52,7 @@ cd delegate-to-deepseek-harness
 
 **Option B — manual copy:** copy `SKILL.md`, `agents/`, `references/`, and `scripts/` into `$CODEX_HOME/skills/delegate-to-deepseek-harness/`.
 
-**Option C — Codex's built-in skill installer** (once this repo is public):
+**Option C — Codex's built-in skill installer:**
 
 ```text
 $skill-installer install https://github.com/LomoMao/delegate-to-deepseek-harness
@@ -89,7 +91,7 @@ After delegation, Codex should inspect the workspace, review the diff, and run t
 
 ## Status
 
-Early and intentionally small. The workflow is useful today, but the DeepSeek Harness ecosystem is moving quickly, so MCP names and setup details may change. MCP tool names documented in this repo reflect `@chushixixin/dsh-harness-mcp-server` v0.1.x; see [setup](references/setup.md).
+Small on purpose, and staying that way. The core workflow — contract, delegation, verification — is stable. The DeepSeek Harness ecosystem around it moves fast, so MCP tool names are pinned to `@chushixixin/dsh-harness-mcp-server` v0.1.x in [setup](references/setup.md) and may need a quick re-check after upgrades.
 
 Issues and small PRs are welcome.
 
