@@ -4,11 +4,39 @@
 
 > Codex keeps the judgment. DeepSeek Harness does the bounded work.
 
+```text
+Codex              = orchestrator + reviewer
+DeepSeek Harness   = worker
+```
+
+```text
+User → Codex ── bounded work ──→ DeepSeek Harness worker
+                                          │
+                              changes + tests
+                                          ↓
+                                  Codex reviews ✓
+```
+
 `delegate-to-deepseek-harness` is a small Agent Skill for handing well-scoped coding work from Codex to DeepSeek Harness, then bringing the result back for review and verification.
 
 It is deliberately not a framework. No task queues, no dashboards, no extra config format — just three questions, answered honestly: *should this be delegated, what exactly should the worker do, and how do you check the result before you believe it.*
 
 The worker itself can run through a DeepSeek Harness MCP bridge or the official headless CLI. If one path breaks tomorrow, the workflow doesn't.
+
+## Try it
+
+```bash
+git clone https://github.com/LomoMao/delegate-to-deepseek-harness.git
+cd delegate-to-deepseek-harness
+./scripts/install_skill.sh   # installs to $CODEX_HOME/skills (default ~/.codex/skills)
+```
+
+Then in Codex:
+
+```text
+Use $delegate-to-deepseek-harness to fix the failing parser tests.
+Keep the public API unchanged, then review the diff and rerun the focused tests yourself.
+```
 
 ## Why
 
@@ -38,37 +66,16 @@ Codex stays responsible for scope, risky judgment, integration, and the final an
 
 Not a good fit for architecture decisions, secrets, deployments, destructive operations, or work with no meaningful verification path.
 
-## Install
+## Other ways to install
 
 Codex loads user skills from `$CODEX_HOME/skills` (default `~/.codex/skills/`).
 
-**Option A — this repo's installer:**
+**Manual copy:** copy `SKILL.md`, `agents/`, `references/`, and `scripts/` into `$CODEX_HOME/skills/delegate-to-deepseek-harness/`.
 
-```bash
-git clone https://github.com/LomoMao/delegate-to-deepseek-harness.git
-cd delegate-to-deepseek-harness
-./scripts/install_skill.sh   # installs to $CODEX_HOME/skills (default ~/.codex/skills)
-```
-
-**Option B — manual copy:** copy `SKILL.md`, `agents/`, `references/`, and `scripts/` into `$CODEX_HOME/skills/delegate-to-deepseek-harness/`.
-
-**Option C — Codex's built-in skill installer:**
+**Codex's built-in skill installer:**
 
 ```text
 $skill-installer install https://github.com/LomoMao/delegate-to-deepseek-harness
-```
-
-Then invoke it in Codex:
-
-```text
-$delegate-to-deepseek-harness
-```
-
-Example:
-
-```text
-Use $delegate-to-deepseek-harness to fix the failing parser tests.
-Keep the public API unchanged, then review the diff and rerun the focused tests yourself.
 ```
 
 ## Worker backends

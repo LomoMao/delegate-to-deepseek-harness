@@ -4,11 +4,39 @@
 
 > Codex 负责判断，DeepSeek Harness 负责干活。
 
+```text
+Codex              = 编排者 + 验收者
+DeepSeek Harness   = Worker
+```
+
+```text
+用户 → Codex ── 边界清楚的活 ──→ DeepSeek Harness Worker
+                                          │
+                              改动 + 测试
+                                          ↓
+                                  Codex 验收 ✓
+```
+
 `delegate-to-deepseek-harness` 是一个很轻的 Agent Skill：把边界清楚的编码任务交给 DeepSeek Harness 执行，再由 Codex 回来做 review 和最终验收。
 
 它刻意不做一个框架。没有任务队列，没有看板，没有新的配置格式——就三件事，老老实实回答：**这件事该不该委派、Worker 具体要做什么、结果怎么验证才算数。**
 
 Worker 本身可以走 DeepSeek Harness MCP，也可以直接用官方 headless CLI。哪条路明天坏了，这套流程都不会坏。
+
+## 先试一下
+
+```bash
+git clone https://github.com/LomoMao/delegate-to-deepseek-harness.git
+cd delegate-to-deepseek-harness
+./scripts/install_skill.sh   # 默认装到 $CODEX_HOME/skills（即 ~/.codex/skills）
+```
+
+然后在 Codex 里说：
+
+```text
+Use $delegate-to-deepseek-harness to fix the failing parser tests.
+Keep the public API unchanged, then review the diff and rerun the focused tests yourself.
+```
 
 ## 为什么做这个
 
@@ -38,37 +66,16 @@ Codex 继续负责范围、风险判断、集成和最后的结论。
 
 不太适合：架构拍板、密钥和敏感操作、部署、破坏性操作，以及根本没办法验证结果的任务。
 
-## 安装
+## 其他安装方式
 
 Codex 的用户 Skill 目录是 `$CODEX_HOME/skills`（默认 `~/.codex/skills/`）。
 
-**方式一：用本仓库的安装脚本**
+**手动复制** —— 把 `SKILL.md`、`agents/`、`references/`、`scripts/` 复制到 `$CODEX_HOME/skills/delegate-to-deepseek-harness/`。
 
-```bash
-git clone https://github.com/LomoMao/delegate-to-deepseek-harness.git
-cd delegate-to-deepseek-harness
-./scripts/install_skill.sh   # 默认装到 $CODEX_HOME/skills（即 ~/.codex/skills）
-```
-
-**方式二：手动复制** —— 把 `SKILL.md`、`agents/`、`references/`、`scripts/` 复制到 `$CODEX_HOME/skills/delegate-to-deepseek-harness/`。
-
-**方式三：Codex 内置 Skill 安装器**：
+**Codex 内置 Skill 安装器**：
 
 ```text
 $skill-installer install https://github.com/LomoMao/delegate-to-deepseek-harness
-```
-
-然后在 Codex 里调用：
-
-```text
-$delegate-to-deepseek-harness
-```
-
-例如：
-
-```text
-Use $delegate-to-deepseek-harness to fix the failing parser tests.
-Keep the public API unchanged, then review the diff and rerun the focused tests yourself.
 ```
 
 ## Worker 怎么跑
@@ -85,9 +92,9 @@ dsh --profile headless "run the tests"
 
 ## 最重要的一条
 
-Worker 说“完成了”，不等于任务真的完成了。
+Worker 说"完成了"，不等于任务真的完成了。
 
-委派结束后，Codex 仍然应该检查工作区、看 diff，并自己跑相关 tests / lint / typecheck / build，再决定能不能向用户说“好了”。
+委派结束后，Codex 仍然应该检查工作区、看 diff，并自己跑相关 tests / lint / typecheck / build，再决定能不能向用户说"好了"。
 
 ## 当前状态
 
@@ -97,7 +104,7 @@ Worker 说“完成了”，不等于任务真的完成了。
 
 ## 安全
 
-Harness Worker 可能拥有文件修改和 shell 执行能力。第三方 Harness 插件应该按“可信本地代码”来对待；MCP 尽量只监听 loopback，并限制可写 workspace。更多见 [SECURITY.md](SECURITY.md)。
+Harness Worker 可能拥有文件修改和 shell 执行能力。第三方 Harness 插件应该按"可信本地代码"来对待；MCP 尽量只监听 loopback，并限制可写 workspace。更多见 [SECURITY.md](SECURITY.md)。
 
 ## 致谢
 
