@@ -1,0 +1,31 @@
+name: Bug report
+description: Something in the skill or setup does not behave as expected
+title: "[bug] "
+labels: [bug]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      placeholder: Tell us what you expected and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      placeholder: Minimal prompt, command, or setup needed to reproduce it.
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      placeholder: Codex, dsh, MCP bridge, OS
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed API keys, private code, and other sensitive data.
+          required: true

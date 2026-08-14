@@ -1,0 +1,15 @@
+interface:
+  display_name: "Delegate to DeepSeek Harness"
+  short_description: "Use DeepSeek Harness as a bounded coding worker"
+  default_prompt: "Delegate the bounded implementation work to DeepSeek Harness, then independently review and verify the result."
+
+policy:
+  allow_implicit_invocation: true
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "deepseekHarness"
+      description: "Local DeepSeek Harness MCP worker bridge (optional; headless CLI is the fallback)"
+      transport: "streamable_http"
+      url: "http://127.0.0.1:8090/mcp"

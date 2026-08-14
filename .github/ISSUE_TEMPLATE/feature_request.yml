@@ -1,0 +1,19 @@
+name: Feature request
+description: Suggest a small improvement to the delegation workflow
+title: "[idea] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would this improve?
+      placeholder: Describe the workflow problem first.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Proposed change
+      placeholder: A small concrete change is easier to review.
+    validations:
+      required: true
