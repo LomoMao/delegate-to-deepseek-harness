@@ -46,7 +46,7 @@ for readme in ("README.md", "README.zh-CN.md"):
 install = (root / "scripts" / "install_skill.sh").read_text(encoding="utf-8")
 if "refusing to install" not in install:
     raise SystemExit("install_skill.sh is missing the destructive-path guard")
-if ".codex" not in install:
-    raise SystemExit("install_skill.sh must default to the Codex skills directory")
+if ".agents/skills" not in install:
+    raise SystemExit("install_skill.sh must default to the official Codex skills directory ($HOME/.agents/skills)")
 
 print("skill structure: ok")

@@ -28,7 +28,7 @@ The worker itself can run through a DeepSeek Harness MCP bridge or the official 
 ```bash
 git clone https://github.com/LomoMao/delegate-to-deepseek-harness.git
 cd delegate-to-deepseek-harness
-./scripts/install_skill.sh   # installs to $CODEX_HOME/skills (default ~/.codex/skills)
+./scripts/install_skill.sh   # installs to $HOME/.agents/skills
 ```
 
 Then in Codex:
@@ -68,9 +68,9 @@ Not a good fit for architecture decisions, secrets, deployments, destructive ope
 
 ## Other ways to install
 
-Codex loads user skills from `$CODEX_HOME/skills` (default `~/.codex/skills/`).
+Codex loads user skills from `$HOME/.agents/skills` (repo-local skills live in `.agents/skills`).
 
-**Manual copy:** copy `SKILL.md`, `agents/`, `references/`, and `scripts/` into `$CODEX_HOME/skills/delegate-to-deepseek-harness/`.
+**Manual copy:** copy `SKILL.md`, `agents/`, `references/`, and `scripts/` into `$HOME/.agents/skills/delegate-to-deepseek-harness/`.
 
 **Codex's built-in skill installer:**
 

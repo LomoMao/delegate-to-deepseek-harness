@@ -4,9 +4,9 @@ set -euo pipefail
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 repo_dir=$(cd -- "$script_dir/.." && pwd)
 
-# Codex loads user skills from $CODEX_HOME/skills (~/.codex/skills by default).
+# Codex loads user skills from $HOME/.agents/skills (official Codex docs).
 skill_name=delegate-to-deepseek-harness
-dest=${1:-"${CODEX_HOME:-$HOME/.codex}/skills/$skill_name"}
+dest=${1:-"$HOME/.agents/skills/$skill_name"}
 
 # Safety: refuse destinations where rm -rf would be catastrophic.
 case "$dest" in

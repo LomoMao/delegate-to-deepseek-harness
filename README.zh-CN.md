@@ -28,7 +28,7 @@ Worker 本身可以走 DeepSeek Harness MCP，也可以直接用官方 headless 
 ```bash
 git clone https://github.com/LomoMao/delegate-to-deepseek-harness.git
 cd delegate-to-deepseek-harness
-./scripts/install_skill.sh   # 默认装到 $CODEX_HOME/skills（即 ~/.codex/skills）
+./scripts/install_skill.sh   # 默认装到 $HOME/.agents/skills
 ```
 
 然后在 Codex 里说：
@@ -68,9 +68,9 @@ Codex 继续负责范围、风险判断、集成和最后的结论。
 
 ## 其他安装方式
 
-Codex 的用户 Skill 目录是 `$CODEX_HOME/skills`（默认 `~/.codex/skills/`）。
+Codex 的用户 Skill 目录是 `$HOME/.agents/skills`（仓库级 Skill 在 `.agents/skills`）。
 
-**手动复制** —— 把 `SKILL.md`、`agents/`、`references/`、`scripts/` 复制到 `$CODEX_HOME/skills/delegate-to-deepseek-harness/`。
+**手动复制** —— 把 `SKILL.md`、`agents/`、`references/`、`scripts/` 复制到 `$HOME/.agents/skills/delegate-to-deepseek-harness/`。
 
 **Codex 内置 Skill 安装器**：
 

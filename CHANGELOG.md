@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2 - 2026-08-15
+
+- Fix the default user-skill install path to the official Codex location `$HOME/.agents/skills` (the previous `$CODEX_HOME/skills` path was never read by Codex).
+- Update installer validation, bilingual README examples, and the integration docs accordingly.
+
 ## 0.1.1 - 2026-08-15
 
 - Fix install path to the official Codex skills directory (`$CODEX_HOME/skills`, default `~/.codex/skills`).
