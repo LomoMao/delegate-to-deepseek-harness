@@ -94,7 +94,19 @@ See [setup](references/setup.md) for the current MCP example and the safer defau
 
 A worker saying “done” is not evidence that the task is done.
 
-After delegation, Codex should inspect the workspace, review the diff, and run the relevant tests/lint/typecheck/build before reporting success.
+After delegation, Codex verifies the worker's result against a machine-checked **verification contract** (changed files in scope, no new dependencies, tests pass) via `scripts/verify_workspace.sh`, then reviews by risk level — and stops when the contract passes.
+
+**Delegate the work. Verify the evidence. Don't redo the work.**
+
+Why that last sentence exists, from one real delegation run:
+
+```text
+planning         8%
+worker          12%
+manager review  80%   ← the worker had already passed 16/16 tests
+```
+
+The expensive part wasn't delegation. It was verification without a stopping rule.
 
 ## Status
 

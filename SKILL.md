@@ -11,6 +11,8 @@ Use DeepSeek Harness as a worker. Keep Codex as orchestrator, reviewer, and fina
 
 Delegate execution, not responsibility. A worker report is a claim, not proof. Review the workspace and independently verify relevant acceptance criteria before reporting success.
 
+Verify the contract, not the whole implementation again. **Delegate the work. Verify the evidence. Don't redo the work.**
+
 ## Decide whether to delegate
 
 Delegate when the task is self-contained and at least one of these is true:
@@ -51,6 +53,13 @@ Acceptance criteria:
 - <observable condition>
 - <observable condition>
 
+Verification contract:
+- allowed_paths: <glob list, e.g. src/parser/**>
+- checks: <test/lint/typecheck/build commands to run>
+- invariants: <no_new_dependencies | no_public_api_change | no_untracked_files | ...>
+- limits: <max_changed_files | max_diff_lines>
+- review_mode: receipt | targeted | full
+
 Verification:
 - <focused command/check if known>
 
@@ -80,16 +89,29 @@ scripts/dsh_headless.sh "<worker brief>" "<absolute cwd>"
 
 If the MCP returns structured fields, inspect `changes`, `verification`, `leftovers`, and the final assistant text. Inspect tool traces when the summary is unclear.
 
-After any mutating worker:
+First run the machine verifier with the contract from the brief:
 
-1. inspect `git status` and `git diff`;
-2. confirm changes stayed in scope and preserve unrelated work;
-3. look for generated junk, secrets, broad formatting churn, and unexpected dependencies;
-4. run the narrowest meaningful tests/lint/typecheck/build;
-5. review risky logic yourself;
-6. check each acceptance criterion against repository state or command output.
+```bash
+scripts/verify_workspace.sh --allowed-paths '<glob>' --checks '<command>' [--invariants no-new-deps,no-public-api-change,no-untracked] [--max-changed-files N] [--max-diff-lines N]
+```
 
-Never say tests passed unless Codex observed a reliable test result.
+It returns a small JSON receipt (status, changed files, diff lines, scope check, test results, risk flags). Then review by the contract's review mode:
+
+- **receipt** (test fixes, mechanical edits, small bugs): contract PASS → report done. Do not read the diff. Do not edit.
+- **targeted** (ordinary features): contract PASS → skim the changed-file summary or named high-risk hunks only. No concrete defect seen → done.
+- **full** (auth, payment, DB migrations, concurrency, security, public API, broad architecture): read the full diff and review risky logic yourself.
+
+**Stop rule — the contract is the finish line.** If the verification contract passes:
+
+- do not make additional edits;
+- do not broaden scope;
+- do not refactor for cleanliness;
+- do not add defensive handling;
+- do not improve unrelated edge cases;
+- do not rerun broader tests unless the contract requires them;
+- report completion.
+
+Reopen implementation only on a concrete contract failure or a predefined high-risk trigger. Never say tests passed unless Codex observed a reliable test result.
 
 If the worker is blocked or wrong, either fix the issue directly or send one focused follow-up. Avoid open-ended retry loops; after two failed delegated attempts on the same failure mode, take over or report the blocker.
 

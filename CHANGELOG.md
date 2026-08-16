@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 - 2026-08-15
+
+- Add the **verification contract + stop rule**: after a worker finishes, the manager verifies machine-checkable boundaries and stops when they pass — no re-implementation drift.
+- Add `scripts/verify_workspace.sh`: a non-LLM verifier (changed files, scope, diff size, dependency/public-API/untracked invariants, test commands) that prints a small JSON receipt.
+- SKILL.md review flow is now risk-tiered: `receipt` / `targeted` / `full`.
+- Core rule extended: "Delegate the work. Verify the evidence. Don't redo the work."
+- Motivated by measured data: in one real run the manager review consumed 80% of tokens after the worker had already passed 16/16 tests.
+
 ## 0.1.2 - 2026-08-15
 
 - Fix the default user-skill install path to the official Codex location `$HOME/.agents/skills` (the previous `$CODEX_HOME/skills` path was never read by Codex).
